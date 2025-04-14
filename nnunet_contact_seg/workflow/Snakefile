@@ -1,0 +1,46 @@
+import snakebids
+from snakebids import bids
+
+
+configfile: "config/snakebids.yml"
+
+
+# Get input wildcards
+inputs = snakebids.generate_inputs(
+    bids_dir=config["bids_dir"],
+    pybids_inputs=config["pybids_inputs"],
+    pybidsdb_dir=config.get("pybidsdb_dir"),
+    pybidsdb_reset=config.get("pybidsdb_reset"),
+    derivatives=config.get("derivatives", None),
+    participant_label=config.get("participant_label", None),
+    exclude_participant_label=config.get("exclude_participant_label", None),
+    validate=not config.get("plugins.validator.skip", False),
+)
+
+
+# this adds constraints to the bids naming
+wildcard_constraints:
+    **snakebids.get_wildcard_constraints(config["pybids_inputs"]),
+
+
+# ----
+wildcard_constraints:
+    desc="[a-zA-Z0-9]+",
+    space="[a-zA-Z0-9]+",
+    hemi="[a-zA-Z0-9]+",
+    surfname="[a-zA-Z0-9]+",
+    modality="[a-zA-Z0-9]+",
+    density="[a-zA-Z0-9]+",
+    atlas="[a-zA-Z0-9]+",
+    label="[a-zA-Z0-9]+",
+    template="[a-zA-Z0-9]+",
+
+include: "rules/preprocessing.smk"
+include: "rules/nnunet.smk"
+include: "rules/common.smk"
+include: "rules/coords.smk"
+
+
+rule all:
+    input:
+        get_final_output(),

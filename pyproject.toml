@@ -1,18 +1,66 @@
 [project]
-name = "nnunet-contact-seg"
+name = "nnUNet_contact_seg"
 version = "0.1.0"
-description = "Add your description here"
+description = "Automatic contact segmentation BIDS app"
 readme = "README.md"
-requires-python = ">=3.10"
+license = "MIT"
+authors = [{ name = "Arun Thurairajah", email = "a.thurairajah1@gmail.com" }]
+requires-python = ">=3.10,<4.0"
 dependencies = [
+    "snakebids==0.14.0",
+    "appdirs>=1.4.4",
+    "pulp<2.8.0; python_version<'3.11'",
+    "pyvista>=0.44.2",
     "acvl-utils==0.2",
     "blosc2>=2.7.1",
     "nnunetv2>=2.5.1",
-    "pulp<2.8.0",
     "scikit-image>=0.25.0",
-    "snakebids>=0.13.1",
-    "snakemake>=7.32.4",
     "torch>=2.5.1",
     "torchaudio>=2.5.1",
     "torchvision>=0.20.1",
 ]
+
+[project.optional-dependencies]
+dev = [
+    "flake8>=4.0.1",
+    "pytest-console-scripts>=1.2.1",
+    "pytest>=6.2.5",
+    "black>=24.0.0",
+    "pylint>=2.11.1",
+    "isort>=5.10.1",
+    "poethepoet>=0.10.0",
+    "snakefmt>=0.10.0",
+    "pygraphviz==1.7",
+    "Jinja2>=3.0.3"
+]
+
+[project.scripts]
+nnunet_contact_seg = "nnunet_contact_seg.run:app.run"
+
+[tool.setuptools.packages.find]
+where = ["."]
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.poe.tasks]
+quality_check = { shell = "isort nnunet_contact_seg/*.py -c && black nnunet_contact_seg --check && snakefmt nnunet_contact_seg --check" }
+quality_fix = { shell = "isort nnunet_contact_seg/*.py && black nnunet_contact_seg  && snakefmt nnunet_contact_seg" }
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+
+[tool.pylint.master]
+ignore-patterns = "^[0-9][0-9]+_,^test_"
+
+[tool.pylint.format]
+good-names = "i,j,k,ex,_,x,y,f,d"
+
+[tool.pylint.messages_control]
+disable = """
+    missing-function-docstring,
+    missing-module-docstring,
+    fixme
+"""

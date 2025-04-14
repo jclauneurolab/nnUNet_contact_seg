@@ -1,13 +1,19 @@
 #!/usr/bin/env python3
+import os
 from pathlib import Path
 
 from snakebids import bidsapp, plugins
+
+if "__file__" not in globals():
+    __file__ = "../nnunet_contact_seg/run.py"
 
 app = bidsapp.app(
     [
         plugins.SnakemakeBidsApp(Path(__file__).resolve().parent),
         plugins.BidsValidator(),
-        plugins.Version(distribution="bids_boilerplate"),
+        plugins.Version(distribution="nnUNet_contact_seg"),
+        plugins.CliConfig("parse_args"),
+        plugins.ComponentEdit("pybids_inputs"),
     ]
 )
 

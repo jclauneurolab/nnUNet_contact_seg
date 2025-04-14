@@ -24,6 +24,18 @@ pybids_inputs:
     wildcards:
       - subject
       - run
+  
+  pre_t1w:
+    filters:
+      suffix: T1w
+      extension: .nii.gz
+      datatype: anat
+      session: 'pre'
+      run: '02'
+    wildcards:
+      - subject
+      - acquisition
+      - reconstruction
       # - acq
   # target_entry:
   #   filters:
