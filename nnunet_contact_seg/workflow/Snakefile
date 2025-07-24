@@ -35,12 +35,12 @@ wildcard_constraints:
     label="[a-zA-Z0-9]+",
     template="[a-zA-Z0-9]+",
 
-
-include: "rules/nnunet.smk"
 include: "rules/common.smk"
+include: "rules/preprocessing.smk"
+include: "rules/nnunet.smk"
 include: "rules/coords.smk"
-
 
 rule all:
     input:
         get_final_output(),
+

@@ -5,6 +5,7 @@ rule get_coords:
         model_coords=bids(
             root=config["output_dir"],
             suffix="nnUNet.fcsv",
+            datatype="coords",
             **inputs["post_ct"].wildcards,
         ),
     group:
@@ -18,16 +19,12 @@ if config["transform"]:
     rule transform_coords:
         input:
             coords=rules.get_coords.output.model_coords,
-            transformation_matrix=bids(
-                root=config["bids_dir"],
-                suffix="xfm",
-                extension=".txt",
-                **inputs["post_ct"].wildcards,
-            ),
+            transformation_matrix = get_reg_matrix()
         output:
             transformed_coords=bids(
                 root=config["output_dir"],
                 suffix="transformed_nnUNet.fcsv",
+                datatype="coords",
                 **inputs["post_ct"].wildcards,
             ),
         group:
@@ -51,6 +48,7 @@ if config["label"]:
             labelled_coords=bids(
                 root=config["output_dir"],
                 suffix="labelled_nnUNet.fcsv",
+                datatype="coords",
                 **inputs["post_ct"].wildcards,
             ),
         params:

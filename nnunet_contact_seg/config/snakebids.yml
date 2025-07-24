@@ -24,6 +24,17 @@ pybids_inputs:
     wildcards:
       - subject
       - run
+  pre_t1w:
+    filters:
+      suffix: T1w
+      extension: .nii.gz
+      datatype: anat
+      session: 'pre'
+      run: '02'
+    wildcards:
+      - subject
+      - acquisition
+      - reconstruction
       # - acq
   # target_entry:
   #   filters:
@@ -68,6 +79,10 @@ parse_args:
     help: 'Enable gpu for inference by setting resource gpus=1 in run_inference rule (default: %(default)s)'
     default: False
     action: 'store_true'  
+  --manual_reg_matrix:
+    help: 'Path to .txt file with the registration matrix.'
+    default: False
+    action: 'store_true'
 
 
 
