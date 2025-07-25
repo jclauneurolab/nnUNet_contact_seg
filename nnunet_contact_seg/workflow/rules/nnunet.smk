@@ -9,19 +9,6 @@ def get_model():
     ).absolute()
 
 
-def get_input(wildcards):
-    post_ct = bids(
-        root=config["bids_dir"],
-        suffix="ct",
-        datatype="ct",
-        session="post",
-        acq="Electrode",
-        extension=".nii.gz",
-        **inputs["post_ct"].wildcards,
-    )
-    return post_ct
-
-
 def get_cmd_copy_inputs(wildcards, input):
     in_img = input.in_img
     print(in_img)
@@ -48,7 +35,15 @@ rule download_model:
 
 rule model_inference:
     input:
-        in_img=get_input,
+        in_img = bids(
+            root=config["bids_dir"],
+            suffix="ct",
+            datatype="ct",
+            session="post",
+            acq="Electrode",
+            extension=".nii.gz",
+            **inputs["post_ct"].wildcards,
+        ),
         nnUNet_model=get_model(),
     params:
         device="cuda" if config["use_gpu"] else "cpu",
@@ -62,6 +57,7 @@ rule model_inference:
             root=config["output_dir"],
             suffix="dseg.nii.gz",
             desc="contacts_nnUNet",
+            datatype="contact_seg",
             **inputs["post_ct"].wildcards,
         ),
     log:
