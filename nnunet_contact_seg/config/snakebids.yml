@@ -83,8 +83,10 @@ parse_args:
     help: 'Path to .txt file with the registration matrix.'
     default: False
     action: 'store_true'
-
-
+  --contacts_qc:
+    help: 'Produces html qc plots to show labelled contacts over the ct and t1w images (default: %(default)s)'
+    default: False
+    action: 'store_true' 
 
 # Docker and singularity containers may be defined here
 containers:

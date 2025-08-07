@@ -96,9 +96,9 @@ def determineFCSVCoordSystem(input_fcsv, overwrite_fcsv=False):
                 float_format="%.6f",
             )
 
-            print(
-                f"Converted LPS to RAS: {os.path.dirname(input_fcsv)}/{os.path.basename(input_fcsv)}"
-            )
+            # print(
+            #     f"Converted LPS to RAS: {os.path.dirname(input_fcsv)}/{os.path.basename(input_fcsv)}"
+            # )
     return coord_sys, headFin
 
 
@@ -207,7 +207,6 @@ def label_multiple_electrodes(electrodes, manufacturer_dict):
     for electrode in electrodes:
         if electrode["contacts"]:
             num_contacts = len(electrode["contacts"])
-            # print(num_contacts)
 
             electrode["sorted_contacts"], spacing = new_label_contacts(
                 electrode["target_point"], electrode["contacts"]
@@ -222,7 +221,6 @@ def label_multiple_electrodes(electrodes, manufacturer_dict):
                 ]
             else:
                 electrode["elec_type"] = "NA"
-            # print(electrode['elec_type'])
     return electrodes
 
 

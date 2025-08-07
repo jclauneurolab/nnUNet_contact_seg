@@ -39,6 +39,7 @@ include: "rules/common.smk"
 include: "rules/preprocessing.smk"
 include: "rules/nnunet.smk"
 include: "rules/coords.smk"
+include: "rules/qc.smk"
 
 rule all:
     input:
